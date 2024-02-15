@@ -1,0 +1,93 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+import ctypes
+
+class DynamicArray:
+    def __init__(self):
+        self._n = 0
+        self._capacity = 1
+        self._A = self._make_array(self._capacity)
+    def __len__(self): 
+        return self._n
+    def is_empty(self,n): 
+        return self._n == 0
+    def append(self, newv): 
+        if self._n == self._capacity:
+            self._resize(2 * self._capacity)
+        self._A[self._n] = newv
+        self._n += 1
+    def _make_array(self, capacity): 
+        "Return new array with capacity 'capacity'"
+        return (capacity * ctypes.py_object)()
+    def _resize(self, capacity):
+        B = self._make_array(capacity)
+        for element in range(self._n):
+            B[element] = self._A[element]
+        self._A = B
+        self._capacity = capacity
+    def __str__(self):
+        st=""
+        for i in range(self._n):
+            st+= str(self._A[i]) + ", "
+        return '['+st+']'
+    def __getitem__(self, k):
+        
+        if k>=0 and k<self._n:
+            return  '['+str(self._A[k])+']'
+        elif k>=-self._n and k<=-1:
+            return  '['+str(self._A[self._n+k])+']'
+        else:
+            print('Your index is out of range.')
+    def __setitem__(self,k,value):
+        if k<=self._n and k>0:
+            self._A[k]=value
+        elif k<=-1 and k>=-self._n:
+            self._A[self._n+k]=value
+        else:
+            print ('Your index is out of range>')
+    def count(self, value): # counting  number of iteration of this value
+        cont = 0
+        for indx in range(self._n):
+            if self._A[indx]==value:
+                cont += 1
+        return cont
+    def index(self, value):
+        for k in range(self._n):
+            if self._A[k]==value:
+                return k
+        raise ValueError('The value does not exist.')
+    def __contains__(self, value):  # in
+        for k in range(self._n):
+            if self._A[k] == value:
+                return True
+        return False
+    def __eq__(self, other):# 'other' like 'self' it's for another instance.
+          if self._n == other._n:
+             for k in range(self._n):
+                 if self._A[k] != other._A[k]:
+                     return False
+             return True
+          else:
+             return False
+    def pop(self, k=None):
+        if k == None:
+            self._n -= 1
+        else:
+            for j in range(k, self._n-1):
+                self._A[j]=self._A[j+1]
+            self._n -=1
+                
+l1 = DynamicArray()
+for i in range(10):
+    l1.append(i**2)
+l2 = DynamicArray()
+for i in range(10):
+    l2.append(i**2)
+print (l1)
+print(l1.pop(1))
+
+
